@@ -1,0 +1,36 @@
+{
+  "name": "ua-parser-tools",
+  "description": "Development Tools for ua-parser",
+  "version": "0.1.0",
+  "maintainers": [
+    {
+      "name": "Commenthol",
+      "email": "commenthol@gmail.de"
+    }
+  ],
+  "contributors": [
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/commenthol/ua-parser-tools.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/commenthol/ua-parser-tools/LICENSE"
+    },
+    {
+      "type": "Apache-2.0",
+      "url": "https://raw.github.com/commenthol/ua-parser-tools/LICENSE"
+    }
+  ],
+  "dependencies": {
+    "yamlparser": ">=0.0.2",
+    "js-yaml": "*"
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "start": "node util/download.js"
+  }
+}
