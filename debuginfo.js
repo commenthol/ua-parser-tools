@@ -18,7 +18,7 @@ var
 /**
  * Module variables
  */
-var regexes = __dirname + '/' + config.regexes_yaml;
+var regexes = __dirname + '/' + config.regexes_yaml.dir + '/' + config.regexes_yaml.file;
 
 function addZeros(n, length) {
   var str = '' + n;

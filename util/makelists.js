@@ -19,6 +19,8 @@ var
  * @property {Boolean} options.family    - false: do not add family field
  * @property {Boolean} options.debug     - false: do not add debug field
  * @property {Boolean} options.swapdebug - if debug == true then debug info is printed in the swapdebug field
+ * @property {Boolean} options.other     - true: add also unmatched user-agents to testcases
+ * @property {Boolean} options.appenduas - true: append user-agents from test-cases to check for broken tests
  * @property {Array}   options.fields    - fields used to add data 
  */
 function makeLists(config, options) {
@@ -28,7 +30,7 @@ function makeLists(config, options) {
     broken_tests = [],
     broken_log   = [],
     testcase_map = {},
-    testcases    = { test_cases: {} },
+    testcases    = { test_cases: [] },
     attr         = config.attr || [],
     report       = reportData(options);
 
@@ -38,7 +40,7 @@ function makeLists(config, options) {
   console.log('... reading ' + options.file);
   user_agents = fileSync.readUserAgentsListSync(options.file);
 
-  if (options.testcases) {
+  if (options.testcases && config.testcasesfile !== '#') {
     console.log('... reading ' + config.testcasesfile);
     testcases = fileSync.readSync(config.testcasesfile);
 
@@ -128,8 +130,8 @@ function makeLists(config, options) {
       obj[pp] = p[pp];
     });
 
-    // do not add test cases without any match at the moment
-    if (p.family !== 'Other') {
+    // control adding test cases without any match
+    if (options.other || p.family !== 'Other') {
       testcases.test_cases.push(obj);
     }
   });
@@ -137,11 +139,12 @@ function makeLists(config, options) {
   console.log('... ' + report.length() + ' user-agents processed');
   // write reports
   console.log('... writing list ' + options.listfile);
+  fileSync.createDirsSync(options.listfile);
   fs.writeFileSync(options.listfile, report.show(), 'utf8');
 
   if (options.testcases) {
     if (broken_log.length > 0) {
-      console.log('... Number of broken testcases: ' + broken_log.length);
+      console.log('... '+ broken_log.length +' number of broken testcases: ');
       console.log('... writing broken tests log file ' + options.logfile);
       fs.writeFileSync(options.logfile , broken_log.join('----\n'), 'utf8');
     }
@@ -153,6 +156,7 @@ function makeLists(config, options) {
       });
     }
     // write test cases
+    console.log('... '+ testcases.test_cases.length +' number of testcases' );
     console.log('... writing testcases file ' + options.testcasesout);
     fileSync.writeSync(options.testcasesout, testcases);
   }

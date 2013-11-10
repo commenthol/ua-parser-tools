@@ -129,8 +129,9 @@ parser you can follow the same steps with replacing `device.js` by either
 * *file:[filename]* : Instead of "useragents.txt" the file with "filename" is used as input.
 * *swapdebug:true*  : Change the column for showing the regex matcher number from column one. The sorting of the resulting cvs-table will be different. This option allows to check different matchers for same model, brand or family.
 * *testcases:true*  : Generate testcases file. All user-agents encountered in the testcases file will be appended
-* *testcasesin:[filename]* : Use "filename" as testcases input file instead of the default one of the selected tool. Both YAML and JSON files can be used. Requires setting *testcases:true*.
+* *testcasesin:[filename]* : Use "filename" as testcases input file instead of the default one of the selected tool. Both YAML and JSON files can be used. Requires setting *testcases:true*. If "#" is used as input, no file is used, thus allowing generation of new testcase files.
 * *testcasesout:[filename]* : Use "filename" as testcases output file instead of the default one of the selected tool. Both YAML and JSON files can be used. Requires setting *testcases:true*.
+* *other:true* : Add also unmatched user-agents to testcases. Requires setting *testcases:true*.
 * *appenduas:false* : Usually the User-Agents of the testcases input file get appended to check for broken tests. If this is not desired, then use this setting. The User-Agents will be missing in the resulting testcases output file then.
 
 ### Conversions
@@ -143,12 +144,18 @@ node os.js file:nouseragents.txt testcases:true testcasesout:mytests.json
 
 This is in particuar usefull, if you are processing very large testcases with more than 500,000 User-Agents. Parsing JSON is pretty much faster here than YAML.
 
+### Add even unmatched entries to the testcases file
+
+````
+node device.js file:myuseragents.txt testcases:true testcasesout:mytests.json other:true
+````
+
 ### Generate a new testcases file
 
 To generate a complete new set of testcases 
 
 ````
-node ua.js file:myuseragents.txt testcases:true appenduas:false testcasesout:mytests.json
+node ua.js file:myuseragents.txt testcases:true testcasesin:# testcasesout:mytests.json
 ````
 
 ### Run tests against you testcases file
@@ -156,3 +163,4 @@ node ua.js file:myuseragents.txt testcases:true appenduas:false testcasesout:myt
 ````
 node ua.js file:myuseragents.txt testcases:true testcasesin:mytests.json testcasesout:mytestsout.json
 ````
+

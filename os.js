@@ -28,7 +28,7 @@ var
  * Option variables
  *
  * @property {String}  options.file      - filename of file continaing raw user-agent-strings
- * @property {String}  options.testcasesin  - input file for test cases
+ * @property {String}  options.testcasesin  - input file for test cases; default is test resource from project; "#" does not select any input file.
  * @property {String}  options.testcasesout - output filename for test cases
  * @property {String}  options.listfile  - output file for generated csv list
  * @property {String}  options.logfile   - output logfile for broken test cases
@@ -41,6 +41,7 @@ var
  * @property {Boolean} options.testcases - true: process also input testcases.
  * @property {Boolean} options.swapdebug - true: show debug info after column brand model to 
  * @property {Boolean} options.appenduas - true: append user-agents from test-cases to check for broken tests
+ * @property {Boolean} options.other     - true: add also unmatched user-agents to testcases
  */
 var options = {
   file: "useragents.txt",
@@ -53,7 +54,8 @@ var options = {
   debug: true,
   swapdebug: false,
   testcases: false,
-  appenduas: true
+  appenduas: true,
+  other: false
 };
 
 // add dirname to all output files - may be overwritten on cli

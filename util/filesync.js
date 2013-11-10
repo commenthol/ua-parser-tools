@@ -70,6 +70,26 @@ function adjustYaml(content) {
 exports.adjustYaml = adjustYaml;
 
 /**
+ * create directory tree if not exists
+ * @param {String} file_path; path to file 
+ */ 
+function createDirsSync(file_path) {
+  var
+    stat,
+    dirname = path.dirname(path.normalize(file_path)),
+    dirs = dirname.split('/');
+
+  dirname = '';
+  dirs.map(function(p){
+    dirname += p + '/';
+    if( !fs.existsSync(dirname) ){
+      fs.mkdirSync(dirname);  
+    }
+  });
+}
+exports.createDirsSync = createDirsSync;
+
+/**
  * read and parse yaml file with yamlparser.
  * @param {String} path to yaml file
  * @return {Object} yaml parsed object
@@ -97,10 +117,11 @@ exports.readYamlSync = readYamlSync;
 /**
  * write yaml file.
  * @param {String} file_path; path to yaml file
- * @return {Object} content object
+ * @param {Object} content object
  */
 function writeYamlSync(file_path, content) {
   content = adjustYaml(jsyaml.dump(content));
+  createDirsSync(file_path);
   fs.writeFileSync(file_path, content, 'utf8');
 }
 exports.writeYamlSync = writeYamlSync;
@@ -120,10 +141,11 @@ exports.readJsonSync = readJsonSync;
 /**
  * write json file.
  * @param {String} file_path; path to json file
- * @return {Object} content object
+ * @param {Object} content object
  */
 function writeJsonSync(file_path, content) {
   content = JSON.stringify(content, null, ' ');
+  createDirsSync(file_path);
   fs.writeFileSync(file_path, content, 'utf8');
 }
 exports.writeJsonSync = writeJsonSync;
@@ -148,7 +170,7 @@ exports.readSync = readSync;
 /**
  * write a yaml or a json file depending on its extension.
  * @param {String} file_path; path to json/yaml file
- * @return {Object} content object
+ * @param {Object} content object
  */
 function writeSync(file_path, content) {
   var ext = path.extname(file_path);
