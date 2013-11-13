@@ -48,6 +48,20 @@ function makeLists(config, options) {
       console.log('... appending user-agents from test cases');
     }
 
+    // delete doubled testcases first
+    testcase_map = {};
+    testcases.test_cases = testcases.test_cases.filter(function(p) {
+      if (testcase_map[p.user_agent_string] === 1) {
+        console.log('... deleting doubled testcase for: ' + p.user_agent_string);
+        return false;
+      } 
+      else {
+        testcase_map[p.user_agent_string] = 1;
+        return true;
+      }
+    });
+
+    testcase_map = {};
     // convert testcases into a hash for faster lookup
     testcases.test_cases.forEach(function(p, index) {
       if (options.appenduas) {
@@ -59,8 +73,8 @@ function makeLists(config, options) {
       });
     });
   }
-
-  console.log('... parsing user-agents');
+  
+  console.log('... ' + user_agents.length + ' user-agents found ... parsing user-agents');
   // loop over all strings given in the user-agents file
   user_agents.forEach(function(ua_string) {
     var

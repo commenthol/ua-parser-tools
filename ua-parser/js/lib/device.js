@@ -14,7 +14,7 @@ Device.prototype.toString = function() {
 function multiReplace(str, m) {
   return str.replace(/\$(\d)/g, function(tmp, i) {
     return m[i] || '';
-  })/*.replace(/\s*$/, '')*/;
+  }).replace(/\s*$/, '');
 }
 
 exports.makeParser = function(regexes) {
@@ -35,6 +35,7 @@ exports.makeParser = function(regexes) {
     function parser(str) {
       var m = str.match(regexp);
       if (!m) { return null; }
+
       var family = deviceRep ? multiReplace(deviceRep, m) : m[1];
       var brand  = brandRep  ? multiReplace(brandRep, m)  : null;
       var model  = modelRep  ? multiReplace(modelRep, m)  : m[1];
@@ -54,7 +55,8 @@ exports.makeParser = function(regexes) {
       }
     }
 
-    return obj || new Device();  }
+    return obj || new Device();
+  }
 
   return parser;
 };
