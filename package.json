@@ -27,12 +27,12 @@
   ],
   "dependencies": {
     "yamlparser": ">=0.0.2",
-    "js-yaml": "*",
-    "cli": "*"
+    "js-yaml": ">=2.1.3",
+    "cli": ">=0.4.5"
   },
   "devDependencies": {
   },
   "scripts": {
-    "start": "node util/download.js"
+    "start": "node lib/util/download.js"
   }
 }

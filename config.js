@@ -15,7 +15,7 @@
 var config = {
   source: "https://raw.github.com/commenthol/ua-parser/master",
   ua_parser: {
-    dir: __dirname + '/./ua-parser',
+    dir: __dirname + '/ua-parser',
     regexes: 'regexes.yaml',
     test_resources: {
       ua: 'test_user_agent_parser.yaml',

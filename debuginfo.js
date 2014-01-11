@@ -20,8 +20,16 @@ var
 /**
  * Module variables
  */
-var regexes = __dirname + '/' + config.regexes_yaml.dir + '/' + config.regexes_yaml.file;
+var regexes = path.normalize(config.ua_parser.dir + '/' + config.ua_parser.regexes);
 
+/**
+ * add leading zeros 
+ * 
+ * @param  {Integer} n: number
+ * @param  {Integer} length: length of output string
+ * @return {String}  String of length `length` containing Number with 
+ *                   leading zeros
+ */
 function addZeros(n, length) {
   var str = '' + n;
   var z = '00000000';
@@ -31,23 +39,35 @@ function addZeros(n, length) {
   return z.substr(0, length - str.length) + str;
 }
 
-function main(args) {
+/**
+ * add debug info 
+ * 
+ * @param {Boolean}  add: true: add debuginfo, false: remove debuginfo
+ *                   if undefined toggle.
+ * @return {Boolean} true: file changed, false: file remains unchanged
+ */
+function main(add) {
   var data = fs.readFileSync(regexes, 'utf8');
   var cnt = 0;
-  var add = true;
+  var hasDebugInfo = false;
+
+  if (/^\s*debug:\s*'[^']*'/m.test(data)) {
+    hasDebugInfo = true; 
+  }
+
+  if ((add ===  true && hasDebugInfo === true) || 
+      (add === false && hasDebugInfo === false)) {
+    return false;
+  }
 
   // write a backup - for any cases
   fs.writeFileSync(regexes + '.bak', data, 'utf8');
-  
-  if (/^\s*debug:\s*'[^']*'/m.test(data)) {
-    add = false; 
-  }
   
   // delete all debug lines
   data = data.replace(/^\s*debug:\s*'[^']*'[ \t]*\n/mg, '');
   
   // add debug info
-  if (add) {
+  if (! hasDebugInfo) {
     data = data.replace(/(^[ \t]*)(- regex:\s*'[^']*'[ \t]*)/mg, function(m, m1, m2) {
       return m1 + m2 + "\n" + m1 + "  debug: '#" + addZeros(++cnt, 4) + "'";
     });
@@ -58,7 +78,11 @@ function main(args) {
   }
   
   fs.writeFileSync(regexes, data, 'utf8');
+  
+  return true;
 }
+
+module.exports = main;
 
 if (require.main === module) {
   main();
