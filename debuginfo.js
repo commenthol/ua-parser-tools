@@ -1,4 +1,4 @@
-"use strict";
+#!/usr/bin/env node
 
 /*!
  * add or remove debug info to the regexes.yaml file
@@ -6,6 +6,8 @@
  * if debug info is within the regexes.yaml file it is being removed
  * otherwise added.
  */
+
+"use strict";
  
 /**
  * Module dependencies

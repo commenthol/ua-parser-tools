@@ -2,6 +2,7 @@
   "name": "ua-parser-tools",
   "description": "Development Tools for ua-parser",
   "version": "0.1.0",
+  "author": "Commenthol",
   "maintainers": [
     {
       "name": "Commenthol",
@@ -26,7 +27,8 @@
   ],
   "dependencies": {
     "yamlparser": ">=0.0.2",
-    "js-yaml": "*"
+    "js-yaml": "*",
+    "cli": "*"
   },
   "devDependencies": {
   },

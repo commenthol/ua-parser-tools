@@ -13,20 +13,21 @@
  * @property {String} config.output.dir - relative path of output directory
  */
 var config = {
-  source: "https://raw.github.com/commenthol/ua-parser/brand_model",
-  regexes_yaml: {
-    dir: "ua-parser",
-    file: "regexes.yaml"
+  source: "https://raw.github.com/commenthol/ua-parser/master",
+  ua_parser: {
+    dir: __dirname + '/./ua-parser',
+    regexes: 'regexes.yaml',
+    test_resources: {
+      ua: 'test_user_agent_parser.yaml',
+      os: 'test_user_agent_parser_os.yaml',
+      device: 'test_device.yaml'
+    }
   },
-  ua_parser: "./ua-parser/js/lib", // location of the js ua-parser
-  test_resources: {
-    dir: "ua-parser/test_resources",
-    ua: "test_user_agent_parser.yaml",
-    os: "test_user_agent_parser_os.yaml",
-    device: "test_device.yaml"
+  input: {
+    useragents: __dirname + '/useragents.txt'
   },
   output: {
-    dir: 'report'
+    dir: __dirname + '/report'
   }
 };
 

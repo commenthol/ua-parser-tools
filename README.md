@@ -37,9 +37,9 @@ Parse the user-agents with the device-parser.
 
 All files can be used with the following arguments:
 
-* *file:[filename]* : Instead of "useragents.txt" the file with "filename" is used as input.
-* *swapdebug:true*  : Change the column for showing the regex matcher number from column one. The sorting of the resulting cvs-table will be different. This option allows to check different matchers for same model, brand or family.
-* *testcases:true*  : Generate testcases file. All user-agents encountered in the testcases file will be appended
+* *-u PATH* : Instead of "useragents.txt" the file with "PATH" is used as input.
+* *-s*  : Change the column for showing the regex matcher number from column one. The sorting of the resulting cvs-table will be different. This option allows to check different matchers for same model, brand or family.
+* *-t*  : Generate testcases file. All user-agents encountered in the testcases file will be appended
 
 
 ## Development Process
@@ -49,48 +49,56 @@ is depicted with adding new devices to the "device_parsers". For any other
 parser you can follow the same steps with replacing `device.js` by either
 `os.js` or `ua.js` .
 
-1.  Add the debug information to the `regexes.yaml` file. For each
+1.  Clone (or fork) the `ua-parser` project within this directory.
+    
+    ````
+    git clone https://github.com/tobie/ua-parser.git
+    ````
+    
+    *Note:* If you have forked `ua-parser` into a different dir adapt the setting `config.ua_parser.dir` in `config.js` accordingly.
+
+2.  Add the debug information to the `regexes.yaml` file. For each
     "regex" a debug info in the form "#0001" will be added and counted up.
 
     ````
     node debuginfo.js
     ````
 
-2.  Add your user-agents to the file `useragents.txt`.
-3.  Parse the user-agents with the parser you like to change.
+3.  Add your user-agents to the file `useragents.txt`.
+4.  Parse the user-agents with the parser you like to change.
     E.g. here "device_parsers"
 
     ````
     node device.js
     ````
 
-4.  Open the csv-output file in a spreadsheet or with
+5.  Open the csv-output file in a spreadsheet or with
 
     ````
     less -Six12 report/device.csv
     ````
 
-5.  Check the csv-table if the user-agents were parsed the way they should.
+6.  Check the csv-table if the user-agents were parsed the way they should.
     In the first column the debug number will be displayed. If this is
     missing either no match was found (default should be "Other") or the
     debug information is missing in the `regexes.yaml`.
-6.  Change one or more "regex" expressions in the `regexes.yaml` file.
+7.  Change one or more "regex" expressions in the `regexes.yaml` file.
     Parse the user-agents as in Step 3.
-7.  Recheck list again. To get a different view by changing the sorting
+8.  Recheck list again. To get a different view by changing the sorting
     order with family or brand model first use:
 
     ````
-    node device.js swapdebug:true
+    node device.js -s
     ````
 
-8.  If everything is as expected then re-run parsing with involving the
+9.  If everything is as expected then re-run parsing with involving the
     testcases
 
     ````
-    node device.js testcases:true
+    node device.js -t
     ````
 
-9.  This run writes the file `report/test_device.yaml` and maybe
+10. This run writes the file `report/test_device.yaml` and maybe
     `report/device.log`. In `device.log` all broken tests are reported.
     The file `test_device.yaml` writes a new testcases file which contains
     the results for the changed `regexes.yaml` file.
@@ -103,7 +111,7 @@ parser you can follow the same steps with replacing `device.js` by either
     I recommend [diffuse](http://diffuse.sourceforge.net/index_de.html) 
     in case you should prefer a GUI-based difftool.
 
-10. If you are really sure that your changes do not corrupt the previous
+11. If you are really sure that your changes do not corrupt the previous
     testcases and contain the right changes or corrections, remove the
     debuginfo from the `regexes.yaml` file with:
 
@@ -114,32 +122,48 @@ parser you can follow the same steps with replacing `device.js` by either
     Then you can copy the the generated `test_device.yaml` file to your
     fork of the **ua-parser** project.
 
-11. Within your fork of the [ua-parser](https://github.com/tobie/ua-parser)
+12. Within your fork of the [ua-parser](https://github.com/tobie/ua-parser)
     project run the mocha tests with:
 
     ````
     npm test
     ````
-12. If these tests did run without any problems then commit your changes
+13. If these tests did run without any problems then commit your changes
     and issue a pull-request.
 
 
 ## Advanced Settings
 
-* *file:[filename]* : Instead of "useragents.txt" the file with "filename" is used as input.
-* *swapdebug:true*  : Change the column for showing the regex matcher number from column one. The sorting of the resulting cvs-table will be different. This option allows to check different matchers for same model, brand or family.
-* *testcases:true*  : Generate testcases file. All user-agents encountered in the testcases file will be appended
-* *testcasesin:[filename]* : Use "filename" as testcases input file instead of the default one of the selected tool. Both YAML and JSON files can be used. Requires setting *testcases:true*. If "#" is used as input, no file is used, thus allowing generation of new testcase files.
-* *testcasesout:[filename]* : Use "filename" as testcases output file instead of the default one of the selected tool. Both YAML and JSON files can be used. Requires setting *testcases:true*.
-* *other:true* : Add also unmatched user-agents to testcases. Requires setting *testcases:true*.
-* *appenduas:false* : Usually the User-Agents of the testcases input file get appended to check for broken tests. If this is not desired, then use this setting. The User-Agents will be missing in the resulting testcases output file then.
+````
+Options: 
+  -u, --ua PATH          Read user-agent strings from file
+  -o, --out PATH         Write output files .cvs, .log
+  -t, --tc               Process testcases.
+      --tcin PATH        Read testcases from file
+      --tcout PATH       Write testcases to file
+  -c, --console          Output to console
+      --other            Add unmatched user-agents to testcases output file 
+  -s, --swapdebug        Swap debug field in .csv output
+  -d, --nodebug          Do not show debug field in .cvs output
+  -f, --nofamily         Do not show family field in .csv output (device.js only)
+  -a, --noappend         Do not append user-agent strings from -u
+  -h, --help             Display help and usage details
+````
+
+* *-u PATH* : Instead of "useragents.txt" the file with "PATH" is used as input.
+* *-s*  : Change the column for showing the regex matcher number from column one. The sorting of the resulting cvs-table will be different. This option allows to check different matchers for same model, brand or family.
+* *-t*  : Generate testcases file. All user-agents encountered in the testcases file will be appended
+* *--tcin PATH* : Use "PATH" as testcases input file instead of the default one of the selected tool. Both YAML and JSON files can be used. Requires setting *testcases:true*. If "#" is used as input, no file is used, thus allowing generation of new testcase files.
+* *--tcout PATH* : Use "PATH" as testcases output file instead of the default one of the selected tool. Both YAML and JSON files can be used. Requires setting *testcases:true*.
+* *-o* : Add also unmatched user-agents to testcases. Requires setting *testcases:true*.
+* *-a* : Usually the User-Agents of the testcases input file get appended to check for broken tests. If this is not desired, then use this setting. The User-Agents will be missing in the resulting testcases output file then.
 
 ### Conversions
 
 In case that you just want to convert testcases from YAML to JSON you can do the following:
 
 ````
-node os.js file:nouseragents.txt testcases:true testcasesout:mytests.json
+node os.js -u no -t --tcout mytests.json
 ````
 
 This is in particuar usefull, if you are processing very large testcases with more than 500,000 User-Agents. Parsing JSON is pretty much faster here than YAML.
@@ -147,7 +171,7 @@ This is in particuar usefull, if you are processing very large testcases with mo
 ### Add even unmatched entries to the testcases file
 
 ````
-node device.js file:myuseragents.txt testcases:true testcasesout:mytests.json other:true
+node device.js -u myuseragents.txt -t --tcout mytests.json -o
 ````
 
 ### Generate a new testcases file
@@ -155,12 +179,12 @@ node device.js file:myuseragents.txt testcases:true testcasesout:mytests.json ot
 To generate a complete new set of testcases 
 
 ````
-node ua.js file:myuseragents.txt testcases:true testcasesin:# testcasesout:mytests.json
+node ua.js -u myuseragents.txt -t --tcin no --tcout mytests.json
 ````
 
 ### Run tests against you testcases file
 
 ````
-node ua.js file:myuseragents.txt testcases:true testcasesin:mytests.json testcasesout:mytestsout.json
+node ua.js -u myuseragents.txt -t --tcin mytests.json --tcout mytestsout.json
 ````
 
