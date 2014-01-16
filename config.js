@@ -4,16 +4,22 @@
  * Configuration file for ua-parser-tools
  * 
  * @property {String} config.source - uri for downloading the requisites
- * @property {String} config.regexes_yaml.file - filename of regexes.yaml
- * @property {String} config.regexes_yaml.dir - relative path to regexes.yaml file
- * @property {String} config.test_resources.dir - relative path to test_resources dir
- * @property {String} config.test_resources.ua - name of user-agent testcases file
- * @property {String} config.test_resources.os - name of os testcases file
- * @property {String} config.test_resources.device - name of device testcases file
- * @property {String} config.output.dir - relative path of output directory
+ * @property {String} config.input.useragents - default input file containing raw user-agent strings
+ * @property {String} config.output.dir - absolute path of output directory
+ * @property {String} config.ua_parser.dir - absolute directory to ua-parser
+ * @property {String} config.ua_parser.regexes - filename of regexes.yaml
+ * @property {String} config.ua_parser.test_resources.ua - name of user-agent testcases file
+ * @property {String} config.ua_parser.test_resources.os - name of os testcases file
+ * @property {String} config.ua_parser.test_resources.device - name of device testcases file
  */
 var config = {
   source: "https://raw.github.com/commenthol/ua-parser/master",
+  input: {
+    useragents: __dirname + '/useragents.txt'
+  },
+  output: {
+    dir: __dirname + '/report'
+  },
   ua_parser: {
     dir: __dirname + '/ua-parser',
     regexes: 'regexes.yaml',
@@ -23,11 +29,8 @@ var config = {
       device: 'test_device.yaml'
     }
   },
-  input: {
-    useragents: __dirname + '/useragents.txt'
-  },
-  output: {
-    dir: __dirname + '/report'
+  ua_parser_caps: {
+    dir: __dirname + '/ua-parser-caps',
   }
 };
 
