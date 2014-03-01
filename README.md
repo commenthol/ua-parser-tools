@@ -42,6 +42,32 @@ All files can be used with the following arguments:
 * *-t*  : Generate testcases file. All user-agents encountered in the testcases file will be appended
 
 
+## Quick guide to get this project up and running
+
+1. Install `nave`
+   
+   ````
+   git clone https://github.com/isaacs/nave.git
+   ````
+
+2. Install node
+  
+   ````
+   nave/nave.sh use 0.8.26
+   ````
+   Test if node is running.
+   
+   ````
+   $ echo 'console.log("Hello");' | node
+   Hello
+   ````
+  
+3. Clone this project and run
+
+   ````
+   npm install
+   ````
+
 ## Development Process
 
 As an example the development process to add and change regular expressions

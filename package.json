@@ -31,6 +31,7 @@
     "cli": ">=0.4.5"
   },
   "devDependencies": {
+    "mocha": ">=1.17.0"
   },
   "scripts": {
     "start": "node lib/util/download.js"
