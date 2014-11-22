@@ -1,15 +1,30 @@
-ua-parser-tools
-===============
+# ua-parser-tools
 
-*Development Tools for ua-parser*
+> Development Tools for Development Tools for uap-core (ua-parser)
 
-This project contains development tools which may help to add new regular expressions to the `regexes.yaml` file of the [ua-parser](https://github.com/tobie/ua-parser) Project.
+This project contains development tools which may help to add new regular expressions to the `regexes.yaml` file of the [uap-core](https://github.com/ua-parser/uap-core) Project.
 
 From a file containing user-agent strings sorted csv-tables for the different parsers can be generated.
 With the csv-tables the parsing results for the given user-agent strings can be compared.
 
 To detect the matching parsing line in the `regexes.yaml`, debug information can be added to the file.
 
+## Table of Contents
+
+<!-- !toc (minlevel=2 omit="Table of Contents") -->
+
+* [General Files](#general-files)
+* [Files to generate lists and add test cases](#files-to-generate-lists-and-add-test-cases)
+* [Quick guide to get this project up and running](#quick-guide-to-get-this-project-up-and-running)
+* [Development Process](#development-process)
+* [Advanced Settings](#advanced-settings)
+  * [Conversions](#conversions)
+  * [Add unmatched entries to the testcases file](#add-unmatched-entries-to-the-testcases-file)
+  * [Generate a new testcases file](#generate-a-new-testcases-file)
+  * [Run tests against you testcases file](#run-tests-against-you-testcases-file)
+* [Special Tools](#special-tools)
+
+<!-- toc! -->
 
 ## General Files
 
@@ -44,27 +59,12 @@ All files can be used with the following arguments:
 
 ## Quick guide to get this project up and running
 
-1. Install `nave`
-   
-   ````
-   git clone https://github.com/isaacs/nave.git
-   ````
-
-2. Install node
-  
-   ````
-   nave/nave.sh use 0.8.26
-   ````
-   Test if node is running.
-   
-   ````
-   $ echo 'console.log("Hello");' | node
-   Hello
-   ````
-  
-3. Clone this project and run
+1. Install node from [nodeJS](https://nodejs.org/download/)
+    
+2. Clone this project and run
 
    ````
+   git clone https://github.com/commenthol/ua-parser-tools.git
    npm install
    ````
 
@@ -75,54 +75,54 @@ is depicted with adding new devices to the "device_parsers". For any other
 parser you can follow the same steps with replacing `device.js` by either
 `os.js` or `ua.js` .
 
-1.  Clone (or fork) the `ua-parser` project within this directory.
-    
-    ````
-    git clone https://github.com/tobie/ua-parser.git
-    ````
-    
-    *Note:* If you have forked `ua-parser` into a different dir adapt the setting `config.ua_parser.dir` in `config.js` accordingly.
+1. Clone (or fork) the `ua-parser` project within this directory.
 
-2.  Add the debug information to the `regexes.yaml` file. For each
-    "regex" a debug info in the form "#0001" will be added and counted up.
+   ````
+   git clone https://github.com/ua-parser/uap-core.git
+   ````
 
-    ````
-    node debuginfo.js
-    ````
+   *Note:* If you have forked `uap-core` into a different dir adapt the setting `config.ua_parser.dir` in `config.js` accordingly.
 
-3.  Add your user-agents to the file `useragents.txt`.
-4.  Parse the user-agents with the parser you like to change.
-    E.g. here "device_parsers"
+2. Add the debug information to the `regexes.yaml` file. For each
+   "regex" a debug info in the form "#0001" will be added and counted up.
 
-    ````
-    node device.js
-    ````
+   ````
+   node debuginfo.js
+   ````
 
-5.  Open the csv-output file in a spreadsheet or with
+3. Add your user-agents to the file `useragents.txt`.
+4. Parse the user-agents with the parser you like to change.
+   E.g. here "device_parsers"
 
-    ````
-    less -Six12 report/device.csv
-    ````
+   ````
+   node device.js
+   ````
 
-6.  Check the csv-table if the user-agents were parsed the way they should.
-    In the first column the debug number will be displayed. If this is
-    missing either no match was found (default should be "Other") or the
-    debug information is missing in the `regexes.yaml`.
-7.  Change one or more "regex" expressions in the `regexes.yaml` file.
-    Parse the user-agents as in Step 3.
-8.  Recheck list again. To get a different view by changing the sorting
-    order with family or brand model first use:
+5. Open the csv-output file in a spreadsheet or with
 
-    ````
-    node device.js -s
-    ````
+   ````
+   less -Six12 report/device.csv
+   ````
 
-9.  If everything is as expected then re-run parsing with involving the
-    testcases
+6. Check the csv-table if the user-agents were parsed the way they should.
+   In the first column the debug number will be displayed. If this is
+   missing either no match was found (default should be "Other") or the
+   debug information is missing in the `regexes.yaml`.
+7. Change one or more "regex" expressions in the `regexes.yaml` file.
+   Parse the user-agents as in Step 3.
+8. Recheck list again. To get a different view by changing the sorting
+   order with family or brand model first use:
 
-    ````
-    node device.js -t
-    ````
+   ````
+   node device.js -s
+   ````
+
+9. If everything is as expected then re-run parsing with involving the
+   testcases
+
+   ````
+   node device.js -t
+   ````
 
 10. This run writes the file `report/test_device.yaml` and maybe
     `report/device.log`. In `device.log` all broken tests are reported.
@@ -154,6 +154,7 @@ parser you can follow the same steps with replacing `device.js` by either
     ````
     npm test
     ````
+
 13. If these tests did run without any problems then commit your changes
     and issue a pull-request.
 
@@ -194,7 +195,7 @@ node os.js -u no -t --tcout mytests.json
 
 This is in particuar usefull, if you are processing very large testcases with more than 500,000 User-Agents. Parsing JSON is pretty much faster here than YAML.
 
-### Add even unmatched entries to the testcases file
+### Add unmatched entries to the testcases file
 
 ````
 node device.js -u myuseragents.txt -t --tcout mytests.json -o
@@ -213,4 +214,12 @@ node ua.js -u myuseragents.txt -t --tcin no --tcout mytests.json
 ````
 node ua.js -u myuseragents.txt -t --tcin mytests.json --tcout mytestsout.json
 ````
+
+## Special Tools
+
+To generate a uniq set of test-vectors from text files containing user-agent strings the tool `uniq.js` together with a previous `sort.js` can be used.
+
+Check `sort.js -h` and `uniq.js -h` for usage.
+
+
 

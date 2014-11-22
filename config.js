@@ -13,7 +13,7 @@
  * @property {String} config.ua_parser.test_resources.device - name of device testcases file
  */
 var config = {
-  source: "https://raw.github.com/commenthol/ua-parser/master",
+  source: "https://raw.github.com/ua-parser/uap-core/master",
   input: {
     useragents: __dirname + '/useragents.txt'
   },
@@ -21,16 +21,17 @@ var config = {
     dir: __dirname + '/report'
   },
   ua_parser: {
-    dir: __dirname + '/ua-parser',
+    dir: __dirname + '/uap-core',
     regexes: 'regexes.yaml',
     test_resources: {
-      ua: 'test_user_agent_parser.yaml',
-      os: 'test_user_agent_parser_os.yaml',
-      device: 'test_device.yaml'
+      ua:     'tests/test_ua.yaml',
+      //~ ua:     'test_resources/firefox_user_agent_strings.yaml', 
+      //~ ua:     'test_resources/pgts_browser_list.yaml',
+      os:     'tests/test_os.yaml',
+      //~ os:     'test_resources/additional_os_tests.yaml',
+      device: 'tests/test_device.yaml',
+      //~ device: 'tests/test_device_brandmodel.yaml',
     }
-  },
-  ua_parser_caps: {
-    dir: __dirname + '/ua-parser-caps',
   }
 };
 
