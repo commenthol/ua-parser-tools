@@ -27,7 +27,7 @@ cli.parse({
 });
 
 cli.main(function(args, options) {
-	options.out = path.resolve(__dirname, ( options.out || '/reports/uniq.txt'));
+	options.out = path.resolve(__dirname, ( options.out || 'report/uniq.csv'));
 
 	if (! options.ua) {
 		cli.error('need -u as option');
@@ -42,7 +42,7 @@ cli.main(function(args, options) {
 		return;
 	}
 
-	filter(options, 
+	filter(options,
 		path.resolve(__dirname, options.ua),
 		options.out,
 		function(err, data){

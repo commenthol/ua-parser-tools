@@ -12,18 +12,17 @@
 var fs = require('fs'),
 	cli = require('cli'),
 	path = require('path'),
-	through = require('./lib/util/through'),
-	split = require('./lib/util/split'),
+	through = require('streamss').Through,
+	split = require('streamss').Split,
 	sorter = require('./lib/util/sorter');
 
 var sorterOptions = {
-	sorter: [ 
-		/^Mozilla\/\d\.0 .*(?:AppleWebKit|Chrome|Gecko)/, 
-		/^Mozilla\/\d/, 
+	sorter: [
+		/^Mozilla\/\d\.0 .*(?:AppleWebKit|Chrome|Gecko)/,
+		/^Mozilla\/\d/,
 		/^Mozilla/,
-		/Mozilla/ 
-	],
-	log: cli.info
+		/Mozilla/
+	]
 };
 
 /**
@@ -35,17 +34,21 @@ cli.parse({
 });
 
 cli.main(function(args, options) {
-	options.out = path.resolve(__dirname, ( options.out || 'report/sorted.txt'));
+	var sIn  = process.stdin,
+			sOut = process.stdout;
 
-	if (! options.ua) {
-		cli.error('need -u as option');
-		return;
+	if (options.ua) {
+		sIn = fs.createReadStream(options.ua);
+	}
+	if (options.out) {
+		sOut = fs.createWriteStream(path.resolve(__dirname, options.out));
+		options.log = cli.info;
 	}
 
-	fs.createReadStream(options.ua)
+	sIn
 		.pipe(split())
 		.pipe(sorter.sort(sorterOptions))
-		.pipe(fs.createWriteStream(options.out))
+		.pipe(sOut)
 		.on('close', function(){
 			cli.ok('writing output to "'+ options.out +'"');
 		});

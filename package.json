@@ -1,7 +1,7 @@
 {
   "name": "ua-parser-tools",
   "description": "Development Tools for uap-core (ua-parser)",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Commenthol",
   "maintainers": [
     {
@@ -11,12 +11,12 @@
   ],
   "contributors": [],
   "bin": {
-    "ua.js": "./ua.js",  
-    "os.js": "./os.js",  
-    "device.js": "./device.js",  
-    "all.js": "./all.js",  
-    "debuginfo.js": "./debuginfo.js",  
-    "sort.js": "./sort.js",  
+    "ua.js": "./ua.js",
+    "os.js": "./os.js",
+    "device.js": "./device.js",
+    "all.js": "./all.js",
+    "debuginfo.js": "./debuginfo.js",
+    "sort.js": "./sort.js",
     "uniq.js": "./uniq.js"
   },
   "repository": {
@@ -37,11 +37,13 @@
     "cli": ">=0.4.5",
     "hashtree": "^0.4.2",
     "js-yaml": ">=2.1.3",
+    "streamss": "^0.2.3",
     "yamlparser": ">=0.0.2"
   },
   "devDependencies": {
-    "mocha": ">=1.17.0"
+    "mocha": "latest"
   },
   "scripts": {
+    "test": "mocha lib/util/test/*.mocha.js"
   }
 }

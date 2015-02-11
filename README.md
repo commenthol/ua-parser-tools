@@ -36,7 +36,7 @@ Add or remove debug information to the `regexes.yaml` file. Run the file with `n
 Please *remove* the debug infomation before commiting the changed `regexes.yaml` file.
 
 **config.js**
-Configuration settings to locate the `test_resources` and the `regexes.yaml` file. 
+Configuration settings to locate the `test_resources` and the `regexes.yaml` file.
 
 
 ## Files to generate lists and add test cases
@@ -60,7 +60,7 @@ All files can be used with the following arguments:
 ## Quick guide to get this project up and running
 
 1. Install node from [nodeJS](https://nodejs.org/download/)
-    
+
 2. Clone this project and run
 
    ````
@@ -134,7 +134,7 @@ parser you can follow the same steps with replacing `device.js` by either
     ````
     diff report/test_device.yaml ua-parser/test_resources/test_device.yaml
     ````
-    I recommend [diffuse](http://diffuse.sourceforge.net/index_de.html) 
+    I recommend [diffuse](http://diffuse.sourceforge.net/index_de.html)
     in case you should prefer a GUI-based difftool.
 
 11. If you are really sure that your changes do not corrupt the previous
@@ -162,14 +162,14 @@ parser you can follow the same steps with replacing `device.js` by either
 ## Advanced Settings
 
 ````
-Options: 
+Options:
   -u, --ua PATH          Read user-agent strings from file
   -o, --out PATH         Write output files .cvs, .log
   -t, --tc               Process testcases.
       --tcin PATH        Read testcases from file
       --tcout PATH       Write testcases to file
   -c, --console          Output to console
-      --other            Add unmatched user-agents to testcases output file 
+      --other            Add unmatched user-agents to testcases output file
   -s, --swapdebug        Swap debug field in .csv output
   -d, --nodebug          Do not show debug field in .cvs output
   -f, --nofamily         Do not show family field in .csv output (device.js only)
@@ -203,7 +203,7 @@ node device.js -u myuseragents.txt -t --tcout mytests.json -o
 
 ### Generate a new testcases file
 
-To generate a complete new set of testcases 
+To generate a complete new set of testcases
 
 ````
 node ua.js -u myuseragents.txt -t --tcin no --tcout mytests.json
@@ -221,5 +221,11 @@ To generate a uniq set of test-vectors from text files containing user-agent str
 
 Check `sort.js -h` and `uniq.js -h` for usage.
 
+Typical use:
 
+    # sort the useragents - Mozilla ... gets first
+    ./sort.js -u useragents.txt > u.tmp
+    # the debuginfo needs to be present for `uniq.js` to work
+    ./debuginfo.js
+    ./uniq.js -t device -u u.tmp
 
